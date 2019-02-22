@@ -49,6 +49,7 @@
         <!-- <cf.password></cf.password> -->
         <!-- This is the host for your app in IBM Cloud and what it will be called in the dashboard. -->
         <cf.host>${app.name}</cf.host>
+		<version.dockerfile-maven-plugin>1.4.10</version.dockerfile-maven-plugin>
     </properties>
 
     <dependencies>
@@ -405,6 +406,30 @@
                                 <app.location>${project.artifactId}-${project.version}.war</app.location>
                             </bootstrapProperties>
                             <installAppPackages>project</installAppPackages>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+		<profile>
+            <id>docker-image</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>${version.dockerfile-maven-plugin}</version>
+                        <executions>
+                            <execution>
+                                <id>build-docker-image</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <repository>openliberty-${project.artifactId}</repository>
+                            <tag>${project.version}</tag>
                         </configuration>
                     </plugin>
                 </plugins>
